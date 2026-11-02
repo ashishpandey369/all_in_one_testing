@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Wire.h>
 #include <string.h>
+#include <Adafruit_NeoPixel.h>
 
 // ============================================================
 // Pocket_Node keypad test port for ESP32-S3
@@ -13,6 +14,11 @@
 // Change these two values if your SDA/SCL wires use different GPIOs.
 #define I2C_SDA_PIN 8
 #define I2C_SCL_PIN 9
+
+// ESP32-S3 DevKitC-1 onboard addressable RGB LED
+#define RGB_LED_PIN 48
+#define RGB_LED_COUNT 1
+Adafruit_NeoPixel onboardRgb(RGB_LED_COUNT, RGB_LED_PIN, NEO_GRB + NEO_KHZ800);
 
 // PCF8575 matrix pin assignments
 const uint8_t ROW_PINS[8] = {3, 11, 5, 6, 8, 2, 13, 14};
@@ -266,6 +272,11 @@ void setup()
 {
     Serial.begin(115200);
     delay(300);
+
+    // Turn off the onboard addressable RGB LED.
+    onboardRgb.begin();
+    onboardRgb.clear();
+    onboardRgb.show();
 
     // Start I2C once; keypadScan uses this same bus.
     Wire.begin(I2C_SDA_PIN, I2C_SCL_PIN);
