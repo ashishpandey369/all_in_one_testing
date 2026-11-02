@@ -233,8 +233,11 @@ static void keypadScan(void (*callback)(const char *))
                     continue;
                 }
 
-                Serial.print("Key Pressed: ");
-                Serial.println(keyMap[r][c]);
+                if (keyMap[r][c] && strlen(keyMap[r][c]) > 0)
+                {
+                    Serial.print("[KEYPAD] Physical key pressed: ");
+                    Serial.println(keyMap[r][c]);
+                }
 
                 if (keyMap[r][c])
                     processKey(keyMap[r][c], callback);
